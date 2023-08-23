@@ -1,5 +1,6 @@
 package com.example.groovytwitter.service.impl
 
+import com.example.groovytwitter.exception.UserValidationException
 import com.example.groovytwitter.model.User
 import com.example.groovytwitter.repository.UserRepository
 import com.example.groovytwitter.service.UserService
@@ -16,7 +17,7 @@ class UserServiceImpl implements UserService {
     @Override
     User getById(String id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No user with id: " + id))
+                .orElseThrow(() -> new UserValidationException("No user with id: " + id))
     }
 
     @Override
@@ -36,7 +37,7 @@ class UserServiceImpl implements UserService {
         if (!isExists(user)) {
             return userRepository.save(user)
         }
-        throw new RuntimeException("User by login: " + user.getLogin() + " already exists")
+        throw new UserValidationException("User by login: " + user.getLogin() + " already exists")
     }
 
     @Override
@@ -44,7 +45,7 @@ class UserServiceImpl implements UserService {
         if (isExists(user)) {
             return userRepository.save(user)
         }
-        throw new RuntimeException("No user for update with login: " + user.login)
+        throw new UserValidationException("No user for update with login: " + user.login)
     }
 
     private boolean isExists(User user) {
