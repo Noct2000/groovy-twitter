@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class HealthController {
-    @GetMapping
-    def success() {
+    @GetMapping("/success")
+    String success() {
         return "success"
     }
 }
