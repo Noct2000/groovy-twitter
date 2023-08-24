@@ -1,6 +1,7 @@
 package com.example.groovytwitter.model.dto
 
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 class UserUpdateRequestDto {
@@ -12,6 +13,8 @@ class UserUpdateRequestDto {
     @Size(min = 8)
     @NotBlank
     String password
+    @NotNull
+    List<String> roleIds
 
     String getId() {
         return id

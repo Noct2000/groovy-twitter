@@ -11,6 +11,15 @@ class User {
     @Indexed(unique = true)
     String login
     String password
+    Set<Role> roles
+
+    Set<Role> getRoles() {
+        return roles
+    }
+
+    void setRoles(Set<Role> roles) {
+        this.roles = roles
+    }
 
     String getId() {
         return id
