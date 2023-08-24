@@ -4,14 +4,21 @@ import com.example.groovytwitter.exception.UserValidationException
 import com.example.groovytwitter.model.User
 import com.example.groovytwitter.repository.UserRepository
 import com.example.groovytwitter.service.UserService
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class UserServiceImpl implements UserService {
     UserRepository userRepository
 
-    UserServiceImpl(UserRepository userRepository) {
+    PasswordEncoder passwordEncoder
+
+    UserServiceImpl(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.userRepository = userRepository
+        this.passwordEncoder = passwordEncoder
     }
 
     @Override
@@ -35,7 +42,7 @@ class UserServiceImpl implements UserService {
     @Override
     User save(User user) {
         if (!isExists(user)) {
-            return userRepository.save(user)
+            return saveUser(user)
         }
         throw new UserValidationException("User by login: " + user.getLogin() + " already exists")
     }
@@ -43,9 +50,17 @@ class UserServiceImpl implements UserService {
     @Override
     User update(User user) {
         if (isExists(user)) {
-            return userRepository.save(user)
+            return saveUser(user)
         }
         throw new UserValidationException("No user for update with login: " + user.login)
+    }
+
+    @Override
+    User getByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .orElseThrow(
+                        () -> new RuntimeException("No user for update with login: " + user.login)
+                )
     }
 
     private boolean isExists(User user) {
@@ -53,4 +68,8 @@ class UserServiceImpl implements UserService {
         return optionalUser.isPresent()
     }
 
+    private User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()))
+        return userRepository.save(user)
+    }
 }

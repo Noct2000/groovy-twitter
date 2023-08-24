@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 class UserUpdateRequestDto {
-    @NotBlank
-    String id
     @Size(min = 4)
     @NotBlank
     String login
@@ -14,7 +12,15 @@ class UserUpdateRequestDto {
     @NotBlank
     String password
     @NotNull
-    List<String> roleIds
+    List<String> roleNames
+
+    List<String> getRoleNames() {
+        return roleNames
+    }
+
+    void setRoleNames(List<String> roleNames) {
+        this.roleNames = roleNames
+    }
 
     String getId() {
         return id
