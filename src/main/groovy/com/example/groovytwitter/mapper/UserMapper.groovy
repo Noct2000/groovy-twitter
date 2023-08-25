@@ -38,6 +38,12 @@ class UserMapper {
                 .stream()
                 .map(role -> roleService.getByRoleName(Role.RoleName.valueOf(role)))
                 .collect(Collectors.toSet())
+        user.setSubscriptions(
+                userUpdateRequestDto.getSubscriptionUserIds()
+                        .stream()
+                        .map(userService::getById)
+                        .collect(Collectors.toSet())
+        )
         user.setRoles(roles)
         return user
     }
@@ -51,6 +57,12 @@ class UserMapper {
                 .map(role -> role.getRoleName().toString())
                 .toList()
         userResponseDto.setRoles(roles)
+        userResponseDto.setSubscriptionUserIds(
+                user.getSubscriptions()
+                        .stream()
+                        .map(User::getId)
+                        .collect(Collectors.toSet())
+        )
         return userResponseDto
     }
 }

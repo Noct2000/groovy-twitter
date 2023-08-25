@@ -6,6 +6,7 @@ import com.example.groovytwitter.repository.UserRepository
 import com.example.groovytwitter.service.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.stream.Collectors
 
 @Service
 class UserServiceImpl implements UserService {
@@ -61,6 +62,28 @@ class UserServiceImpl implements UserService {
                 .orElseThrow(
                         () -> new RuntimeException("No user for update with login: " + user.login)
                 )
+    }
+
+    @Override
+    User subscribeUser(String currentUserLogin, String subscriptionUserId) {
+        User currentUser = getByLogin(currentUserLogin)
+        if (currentUser.getSubscriptions() != null) {
+            currentUser.getSubscriptions().add(getById(subscriptionUserId))
+        } else {
+            currentUser.setSubscriptions(Set.of(getById(subscriptionUserId)))
+        }
+        return userRepository.save(currentUser)
+    }
+
+    @Override
+    User unsubscribeUser(String currentUserLogin, String subscriptionUserId) {
+        User currentUser = getByLogin(currentUserLogin)
+        Set<User> subscriptions = currentUser.getSubscriptions()
+                .stream()
+                .filter(user -> user.getId() != subscriptionUserId)
+                .collect(Collectors.toSet())
+        currentUser.setSubscriptions(subscriptions)
+        return userRepository.save(currentUser)
     }
 
     private boolean isExists(User user) {

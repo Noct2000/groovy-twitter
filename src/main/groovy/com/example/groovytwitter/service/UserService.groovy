@@ -14,4 +14,8 @@ interface UserService {
     User update(User user)
 
     User getByLogin(String login)
+
+    User subscribeUser(String currentUserLogin, String subscriptionUserId)
+
+    User unsubscribeUser(String currentUserLogin, String subscriptionUserId)
 }

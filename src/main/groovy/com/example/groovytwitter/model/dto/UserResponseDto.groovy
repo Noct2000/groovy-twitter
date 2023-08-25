@@ -4,6 +4,15 @@ class UserResponseDto {
     String id
     String login
     List<String> roles
+    Set<String> subscriptionUserIds
+
+    Set<String> getSubscriptionUserIds() {
+        return subscriptionUserIds
+    }
+
+    void setSubscriptionUserIds(Set<String> subscriptionUserIds) {
+        this.subscriptionUserIds = subscriptionUserIds
+    }
 
     List<String> getRoles() {
         return roles

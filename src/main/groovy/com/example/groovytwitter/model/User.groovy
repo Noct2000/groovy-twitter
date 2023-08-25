@@ -12,6 +12,15 @@ class User {
     String login
     String password
     Set<Role> roles
+    Set<User> subscriptions
+
+    Set<User> getSubscriptions() {
+        return subscriptions
+    }
+
+    void setSubscriptions(Set<User> subscriptions) {
+        this.subscriptions = subscriptions
+    }
 
     Set<Role> getRoles() {
         return roles

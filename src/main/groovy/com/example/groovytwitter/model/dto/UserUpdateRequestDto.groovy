@@ -13,6 +13,16 @@ class UserUpdateRequestDto {
     String password
     @NotNull
     List<String> roleNames
+    @NotNull
+    Set<String> subscriptionUserIds
+
+    Set<String> getSubscriptionUserIds() {
+        return subscriptionUserIds
+    }
+
+    void setSubscriptionUserIds(Set<String> subscriptionUserIds) {
+        this.subscriptionUserIds = subscriptionUserIds
+    }
 
     List<String> getRoleNames() {
         return roleNames

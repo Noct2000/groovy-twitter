@@ -2,13 +2,16 @@ package com.example.groovytwitter.controller
 
 import com.example.groovytwitter.mapper.UserMapper
 import com.example.groovytwitter.model.User
+import com.example.groovytwitter.model.dto.SubscriptionRequestDto
 import com.example.groovytwitter.model.dto.UserCreateRequestDto
 import com.example.groovytwitter.model.dto.UserResponseDto
 import com.example.groovytwitter.model.dto.UserUpdateRequestDto
 import com.example.groovytwitter.service.UserService
 import jakarta.validation.Valid
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -53,6 +56,30 @@ class UserController {
     @PutMapping
     UserResponseDto update(@RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto) {
         User user = userService.update(userMapper.toModel(userUpdateRequestDto))
+        return userMapper.toResponseDto(user)
+    }
+
+    @PatchMapping("/subscribe")
+    UserResponseDto subscribe(
+            @RequestBody @Valid SubscriptionRequestDto subscriptionRequestDto,
+            Authentication authentication
+    ) {
+        User user = userService.subscribeUser(
+                authentication.name,
+                subscriptionRequestDto.getUserId()
+        )
+        return userMapper.toResponseDto(user)
+    }
+
+    @PatchMapping("/unsubscribe")
+    UserResponseDto unsubscribe(
+            @RequestBody @Valid SubscriptionRequestDto subscriptionRequestDto,
+            Authentication authentication
+    ) {
+        User user = userService.unsubscribeUser(
+                authentication.name,
+                subscriptionRequestDto.getUserId()
+        )
         return userMapper.toResponseDto(user)
     }
 }
