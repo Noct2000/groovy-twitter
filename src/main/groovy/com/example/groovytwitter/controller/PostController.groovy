@@ -109,7 +109,10 @@ class PostController {
     }
 
     @GetMapping
-    List<PostResponseDto> getPostsForCurrentUser(Authentication authentication) {
-        return null
+    List<PostResponseDto> getPostsForCurrentUserSubscription(Authentication authentication) {
+        return postService.getAllBySubscription(authentication.name)
+                .stream()
+                .map(postMapper::toPostResponseDto)
+                .toList()
     }
 }

@@ -113,6 +113,14 @@ class PostServiceImpl implements PostService {
         return getPost(id)
     }
 
+    @Override
+    List<Post> getAllBySubscription(String login) {
+        return userService.getByLogin(login).getSubscriptions()
+                .stream()
+                .flatMap(user -> getAllByUserLogin(user.getLogin()).stream())
+                .toList()
+    }
+
     private Post getPost(String postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("No post with id: " + postId))

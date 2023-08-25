@@ -21,4 +21,6 @@ interface PostService {
     List<Post> getAll()
 
     Post getById(String id)
+
+    List<Post> getAllBySubscription(String login)
 }
