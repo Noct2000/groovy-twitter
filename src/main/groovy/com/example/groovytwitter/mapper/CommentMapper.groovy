@@ -10,9 +10,14 @@ import java.time.LocalDateTime
 @Component
 class CommentMapper {
     UserService userService
+    UserMapper userMapper
 
-    CommentMapper(UserService userService) {
+    CommentMapper(
+            UserService userService,
+            UserMapper userMapper
+    ) {
         this.userService = userService
+        this.userMapper = userMapper
     }
 
     Comment toModel(
@@ -30,7 +35,7 @@ class CommentMapper {
         CommentResponseDto commentResponseDto = new CommentResponseDto()
         commentResponseDto.setId(comment.getId())
         commentResponseDto.setText(comment.getText())
-        commentResponseDto.setAuthor(comment.getAuthor())
+        commentResponseDto.setAuthor(userMapper.toResponseDto(comment.getAuthor()))
         commentResponseDto.setTimestamp(comment.getTimestamp())
         return commentResponseDto
     }

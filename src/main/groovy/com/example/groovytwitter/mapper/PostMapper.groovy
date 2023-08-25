@@ -8,16 +8,28 @@ import com.example.groovytwitter.service.PostService
 import com.example.groovytwitter.service.UserService
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.util.stream.Collectors
 
 @Component
 class PostMapper {
     UserService userService
-
     PostService postService
+    UserMapper userMapper
+    CommentMapper commentMapper
+    LikeMapper likeMapper
 
-    PostMapper(UserService userService, PostService postService) {
+    PostMapper(
+            UserService userService,
+            PostService postService,
+            UserMapper userMapper,
+            CommentMapper commentMapper,
+            LikeMapper likeMapper
+    ) {
         this.userService = userService
         this.postService = postService
+        this.userMapper = userMapper
+        this.commentMapper = commentMapper
+        this.likeMapper = likeMapper
     }
 
     Post toNewPost(
@@ -35,9 +47,19 @@ class PostMapper {
         PostResponseDto postResponseDto = new PostResponseDto()
         postResponseDto.setId(post.getId())
         postResponseDto.setContent(post.getContent())
-        postResponseDto.setAuthor(post.getAuthor())
-        postResponseDto.setComments(post.getComments())
-        postResponseDto.setLikes(post.getLikes())
+        postResponseDto.setAuthor(userMapper.toResponseDto(post.getAuthor()))
+        postResponseDto.setComments(
+                post.getComments()
+                        .stream()
+                        .map(commentMapper::toCommentResponseDto)
+                        .toList()
+        )
+        postResponseDto.setLikes(
+                post.getLikes()
+                        .stream()
+                        .map(likeMapper::toLikeResponseDto)
+                        .collect(Collectors.toSet())
+        )
         postResponseDto.setTimestamp(post.getTimestamp())
         return postResponseDto
     }

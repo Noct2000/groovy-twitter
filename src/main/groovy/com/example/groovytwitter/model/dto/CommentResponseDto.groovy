@@ -1,11 +1,10 @@
 package com.example.groovytwitter.model.dto
 
-import com.example.groovytwitter.model.User
 import java.time.LocalDateTime
 
 class CommentResponseDto {
     String id
-    User author
+    UserResponseDto author
     String text
     LocalDateTime timestamp
 
@@ -17,11 +16,11 @@ class CommentResponseDto {
         this.id = id
     }
 
-    User getAuthor() {
+    UserResponseDto getAuthor() {
         return author
     }
 
-    void setAuthor(User author) {
+    void setAuthor(UserResponseDto author) {
         this.author = author
     }
 

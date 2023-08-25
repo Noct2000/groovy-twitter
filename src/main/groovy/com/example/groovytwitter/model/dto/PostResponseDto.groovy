@@ -1,24 +1,17 @@
 package com.example.groovytwitter.model.dto
 
-import com.example.groovytwitter.model.Comment
-import com.example.groovytwitter.model.Like
-import com.example.groovytwitter.model.User
 import java.time.LocalDateTime
 
 class PostResponseDto {
     String id
     String content
-    User author
-    List<Comment> comments
-    Set<Like> likes
+    UserResponseDto author
+    List<CommentResponseDto> comments
+    Set<LikeResponseDto> likes
     LocalDateTime timestamp
 
-    LocalDateTime getTimestamp() {
-        return timestamp
-    }
-
-    void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp
+    UserResponseDto getAuthor() {
+        return author
     }
 
     String getId() {
@@ -37,27 +30,31 @@ class PostResponseDto {
         this.content = content
     }
 
-    User getAuthor() {
-        return author
-    }
-
-    void setAuthor(User author) {
+    void setAuthor(UserResponseDto author) {
         this.author = author
     }
 
-    List<Comment> getComments() {
+    List<CommentResponseDto> getComments() {
         return comments
     }
 
-    void setComments(List<Comment> comments) {
+    void setComments(List<CommentResponseDto> comments) {
         this.comments = comments
     }
 
-    Set<Like> getLikes() {
+    Set<LikeResponseDto> getLikes() {
         return likes
     }
 
-    void setLikes(Set<Like> likes) {
+    void setLikes(Set<LikeResponseDto> likes) {
         this.likes = likes
+    }
+
+    LocalDateTime getTimestamp() {
+        return timestamp
+    }
+
+    void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp
     }
 }
