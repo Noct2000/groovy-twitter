@@ -38,6 +38,7 @@ class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/success").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/users").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                .requestMatchers("/posts/**").hasAnyRole("ADMIN", "USER")
 
         )
         .httpBasic(Customizer.withDefaults())
