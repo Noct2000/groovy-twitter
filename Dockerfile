@@ -3,7 +3,7 @@ WORKDIR /home/gradle/src
 # Copy the source code into the image for building
 COPY . /home/gradle/src
 # Build
-RUN ./gradlew build
+RUN gradle build
 
 # Run application
 FROM openjdk:17-oracle
